@@ -1319,7 +1319,7 @@
                         var hashParams = new URLSearchParams(hash.substring(hash.indexOf('?') + 1));
                         toParam = hashParams.get('to');
                     } else {
-                        if (hash.startsWith('/')) {
+                        if (hash.indexOf('/') === 0) {
                             hash = hash.substring(1);
                         }
                         var hashParams = new URLSearchParams(hash);
@@ -1428,41 +1428,49 @@
             }
 
             function loadWishesJsonp() {
-                var container = document.getElementById('wishes-container');
-                if (!container) return;
+                try {
+                    var container = document.getElementById('wishes-container');
+                    if (!container) return;
 
-                var callbackName = "jsonpCallback_" + Math.round(100000 * Math.random());
-                window[callbackName] = function (data) {
-                    renderWishes(data);
-                    cleanup();
-                };
-
-                var scriptTagId = "jsonpScript_" + Math.round(100000 * Math.random());
-                var script = document.createElement('script');
-                script.id = scriptTagId;
-
-                function cleanup() {
-                    var scriptElement = document.getElementById(scriptTagId);
-                    if (scriptElement) {
-                        scriptElement.remove();
-                    }
-                    if (window[callbackName]) {
+                    var callbackName = "jsonpCallback_" + Math.round(100000 * Math.random());
+                    window[callbackName] = function (data) {
                         try {
-                            delete window[callbackName];
-                        } catch (e) {
-                            window[callbackName] = undefined;
+                            renderWishes(data);
+                        } catch (err) {
+                            console.error("Error rendering wishes:", err);
+                        }
+                        cleanup();
+                    };
+
+                    var scriptTagId = "jsonpScript_" + Math.round(100000 * Math.random());
+                    var script = document.createElement('script');
+                    script.id = scriptTagId;
+
+                    function cleanup() {
+                        var scriptElement = document.getElementById(scriptTagId);
+                        if (scriptElement) {
+                            scriptElement.remove();
+                        }
+                        if (window[callbackName]) {
+                            try {
+                                delete window[callbackName];
+                            } catch (e) {
+                                window[callbackName] = undefined;
+                            }
                         }
                     }
+
+                    script.onerror = function () {
+                        console.warn("Wishes JSONP script failed to load. Retrying in 3 seconds...");
+                        cleanup();
+                        setTimeout(loadWishesJsonp, 3000);
+                    };
+
+                    script.src = scriptUrl + (scriptUrl.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callbackName;
+                    document.body.appendChild(script);
+                } catch (e) {
+                    console.error("Error in loadWishesJsonp:", e);
                 }
-
-                script.onerror = function () {
-                    console.warn("Wishes JSONP script failed to load. Retrying in 3 seconds...");
-                    cleanup();
-                    setTimeout(loadWishesJsonp, 3000);
-                };
-
-                script.src = scriptUrl + (scriptUrl.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callbackName;
-                document.body.appendChild(script);
             }
 
             // Load wishes after page resources are loaded to prevent network congestion
