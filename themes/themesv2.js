@@ -338,9 +338,12 @@ var initMusic = function initMusic() {
 
   // Fungsi untuk mengontrol musik dengan implementasi yang lebih bersih
   var playMusic = function playMusic(status) {
-    // Jika status diberikan secara eksplisit, gunakan status tersebut
-    // Jika tidak, toggle status yang ada
     var shouldPlay = status !== undefined ? status : !musicPlaying;
+    
+    // Only play if invitation is opened (i.e. .not-open class has been removed)
+    if (shouldPlay && document.querySelector(".not-open")) {
+      return;
+    }
 
     // Update state
     musicPlaying = shouldPlay && !userPausedMusic;
@@ -815,6 +818,12 @@ var openInvitation = function openInvitation(event) {
     }
   }
 
+  // Remove .not-open FIRST so that the music is allowed to play
+  var notOpenEl = document.querySelector(".not-open");
+  if (notOpenEl) {
+    notOpenEl.classList.remove("not-open");
+  }
+
   // play music
   playMusic(true);
   playInvitation();
@@ -825,7 +834,6 @@ var openInvitation = function openInvitation(event) {
   } else {
     openFullScreen();
   }
-  document.querySelector(".not-open").classList.remove("not-open");
 
   // start event gesture
   window.addEventListener(events[deviceType].down, eventDown, false);
