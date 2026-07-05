@@ -1473,14 +1473,25 @@
                 }
             }
 
-            // Load wishes after page resources are loaded to prevent network congestion
-            if (document.readyState === 'complete') {
-                setTimeout(loadWishes, 1200);
-            } else {
-                window.addEventListener('load', function () {
-                    setTimeout(loadWishes, 1200);
-                });
+            // Unconditional wishes loader that checks DOM availability to bypass event listener race conditions
+            function initWishesAuto() {
+                var maxAttempts = 60; // try for 6 seconds
+                var attempts = 0;
+                var interval = setInterval(function () {
+                    attempts++;
+                    var container = document.getElementById('wishes-container');
+                    if (container) {
+                        clearInterval(interval);
+                        // Delay slightly (300ms) to let DOM paint and network stabilize
+                        setTimeout(loadWishes, 300);
+                    } else if (attempts >= maxAttempts) {
+                        clearInterval(interval);
+                        // Fallback: try calling it anyway
+                        loadWishes();
+                    }
+                }, 100);
             }
+            initWishesAuto();
 
             // Prevent swipe gestures inside wishes container from changing slides
             var wishesContainer = document.getElementById('wishes-container');
