@@ -126,7 +126,7 @@
         <!-- Loader -->
         <div id="loader" class="loader-wrapper"><span class="loader"><span class="loader-inner"></span></span></div>
         <!-- music -->
-        <audio id="music" loop autoplay>
+        <audio id="music" loop preload="none">
             <source src="./Ethereal (Live Strings Version) - Txmy (128k).mp3">
         </audio>
         <!-- end music -->
@@ -266,7 +266,7 @@
 ">
                                                             <img src="./2.jpeg"
                                                                 style="width: 100%;height: 100%;object-fit: cover;"
-                                                                draggable="false">
+                                                                draggable="false" loading="lazy">
                                                         </div>
                                                         <div
                                                             class="text-center mb-2 animate__animated animate__fadeInLeft animate__slower">
@@ -309,7 +309,7 @@
 ">
                                                             <img src="./3.jpeg"
                                                                 style="width: 100%;height: 100%;object-fit: cover;"
-                                                                draggable="false">
+                                                                draggable="false" loading="lazy">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1465,9 +1465,9 @@
 
                     // Add cache-buster and static callback name
                     var cacheBuster = Date.now();
-                    script.src = scriptUrl + (scriptUrl.indexOf('?') >= 0 ? '&' : '?') + 
-                                 'callback=handleWishesResponse&_t=' + cacheBuster;
-                    
+                    script.src = scriptUrl + (scriptUrl.indexOf('?') >= 0 ? '&' : '?') +
+                        'callback=handleWishesResponse&_t=' + cacheBuster;
+
                     var target = document.head || document.getElementsByTagName('head')[0] || document.body;
                     target.appendChild(script);
                 } catch (e) {
