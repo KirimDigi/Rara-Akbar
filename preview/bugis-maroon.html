@@ -11,14 +11,14 @@
     <title>Rara 💕 Akbar</title>
     <meta name="title" content="Hadiri acara pernikahan kami pada jum'at 17 Juli 2026 Ya!">
     <meta name="description" content="Hadiri acara pernikahan kami pada jum'at 17 Juli 2026 Ya!">
-    <meta itemprop="image" content="../1_thumb.jpeg">
+    <meta itemprop="image" content="https://kirimdigi.github.io/Rara-Akbar/1_thumb.jpeg">
     <link rel="icon" type="image/jpeg" href="../kirimdigi.jpg">
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="../">
+    <meta property="og:url" content="https://kirimdigi.github.io/Rara-Akbar/">
     <meta property="og:title" content="Rara 💕 Akbar">
     <meta property="og:description" content="Hadiri acara pernikahan kami pada jum'at 17 Juli 2026 Ya!">
-    <meta property="og:image" content="../1_thumb.jpeg">
+    <meta property="og:image" content="https://kirimdigi.github.io/Rara-Akbar/1_thumb.jpeg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1337,13 +1337,13 @@
                     if (guestNameSlot && guestNameSlot.textContent.trim() !== guestName) {
                         guestNameSlot.textContent = guestName;
                     }
-                    
+
                     // 2. RSVP Form name input
                     var rsvpNameInput = document.getElementById('rsvp-name');
                     if (rsvpNameInput && rsvpNameInput.value.trim() !== guestName) {
                         rsvpNameInput.value = guestName;
                     }
-                    
+
                     // 3. QR Modal name slot
                     var qrGuestName = document.getElementById('qrGuestName');
                     if (qrGuestName && qrGuestName.textContent.trim() !== guestName) {
@@ -1362,7 +1362,7 @@
             applyGuestName();
             document.addEventListener('DOMContentLoaded', applyGuestName);
             window.addEventListener('load', applyGuestName);
-            
+
             var checkCount = 0;
             var checkInterval = setInterval(function () {
                 applyGuestName();
