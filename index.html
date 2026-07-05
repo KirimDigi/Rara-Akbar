@@ -1423,19 +1423,8 @@
                     return;
                 }
 
-                // Standard fetch GET request with redirects handling
-                fetch(scriptUrl)
-                    .then(function (response) {
-                        return response.json();
-                    })
-                    .then(function (data) {
-                        renderWishes(data);
-                    })
-                    .catch(function (error) {
-                        console.error('Error loading wishes via Fetch:', error);
-                        // Try JSONP as dynamic fallback if Fetch GET fails or CORS issue occurs
-                        loadWishesJsonp();
-                    });
+                // Call JSONP directly for instant, CORS-immune data fetching on mobile/desktop
+                loadWishesJsonp();
             }
 
             function loadWishesJsonp() {
